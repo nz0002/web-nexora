@@ -145,9 +145,8 @@
                 <div class="nav-links">
                     <a href="#features" data-i18n="nav_features">Características</a>
                     <a href="#pricing" data-i18n="nav_pricing">Precios</a>
-                    <!-- BOTÓN REDIRIGIDO -->
-                    <a href="javascript:void(0)" onclick="goToApp()" data-i18n="nav_login">Iniciar Sesión</a>
-                    <a href="javascript:void(0)" onclick="goToApp()" class="btn btn-primary" data-i18n="nav_start">Comenzar Gratis</a>
+                    <a href="app.html" data-i18n="nav_login">Iniciar Sesión</a>
+                    <a href="app.html#register" class="btn btn-primary" data-i18n="nav_start">Comenzar Gratis</a>
                 </div>
                 <div class="nav-controls">
                     <button class="icon-btn" onclick="toggleTheme()" id="theme-btn" title="Cambiar Tema">🌙</button>
@@ -161,28 +160,199 @@
         <h1 data-i18n="hero_title">El sistema operativo para tu <span>SaaS & Negocio</span></h1>
         <p data-i18n="hero_desc">Gestiona clientes, automatiza facturas y escala tus ingresos. Todo en un solo lugar, con un diseño premium y funcionalidades listas para producción.</p>
         <div class="hero-buttons">
-            <!-- BOTONES REDIRIGIDOS -->
-            <button onclick="goToApp()" class="btn btn-primary" data-i18n="hero_btn1">Empieza tu prueba gratuita</button>
+            <a href="app.html#register" class="btn btn-primary" data-i18n="hero_btn1">Empieza tu prueba gratuita</a>
             <a href="#features" class="btn btn-outline" data-i18n="hero_btn2">Ver funcionalidades</a>
         </div>
     </section>
 
-    <!-- (Resto del contenido mantenido igual para no romper el diseño...) -->
     <div class="preview-container">
-        <!-- ... (Contenido del preview) ... -->
+        <div class="preview-image" style="height: 450px; display: flex; flex-direction: column;">
+            <div class="browser-header">
+                <div class="dot" style="background:#ef4444;"></div>
+                <div class="dot" style="background:#f59e0b;"></div>
+                <div class="dot" style="background:#10b981;"></div>
+            </div>
+            <div style="display: flex; flex: 1;">
+                <div style="width: 220px; border-right: 1px solid var(--border); padding: 20px; background: var(--bg-light);">
+                    <div style="height: 20px; width: 120px; background: var(--primary); border-radius: 6px; margin-bottom: 30px; opacity: 0.2;"></div>
+                    <div style="height: 12px; width: 140px; background: var(--border); border-radius: 4px; margin-bottom: 15px;"></div>
+                    <div style="height: 12px; width: 120px; background: var(--border); border-radius: 4px; margin-bottom: 15px;"></div>
+                    <div style="height: 12px; width: 130px; background: var(--border); border-radius: 4px;"></div>
+                </div>
+                <div style="flex: 1; padding: 30px; background: var(--bg-white);">
+                    <div style="height: 24px; width: 200px; background: var(--border); border-radius: 6px; margin-bottom: 30px;"></div>
+                    <div style="display: flex; gap: 20px; margin-bottom: 30px;">
+                        <div style="flex: 1; height: 90px; background: var(--bg-light); border-radius: 12px; border: 1px solid var(--border);"></div>
+                        <div style="flex: 1; height: 90px; background: var(--bg-light); border-radius: 12px; border: 1px solid var(--border);"></div>
+                        <div style="flex: 1; height: 90px; background: var(--bg-light); border-radius: 12px; border: 1px solid var(--border);"></div>
+                    </div>
+                    <div style="height: 180px; width: 100%; background: var(--bg-light); border-radius: 12px; border: 1px solid var(--border);"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- ... (Secciones de Features, Pricing, Testimonials, Footer, Modals) ... -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title" data-i18n="feat_title">Todo lo que necesitas para crecer</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3 data-i18n="feat_1_title">Smart CRM</h3>
+                    <p data-i18n="feat_1_desc">Gestiona todos tus clientes, leads y contactos en un entorno ordenado. Control total sobre el estado y notas.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📄</div>
+                    <h3 data-i18n="feat_2_title">Facturación Completa</h3>
+                    <p data-i18n="feat_2_desc">Crea facturas con múltiples conceptos, cálculo automático de IVA y generación de PDF profesional. Directo desde la app.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📅</div>
+                    <h3 data-i18n="feat_3_title">Calendario Integrado</h3>
+                    <p data-i18n="feat_3_desc">Organiza tus citas, vencimientos de facturas y eventos en un calendario visual y fácil de usar.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3 data-i18n="feat_4_title">Dashboard Profesional</h3>
+                    <p data-i18n="feat_4_desc">Visualiza tus ingresos, proyecciones y estado general de la empresa con gráficas dinámicas limpias.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💬</div>
+                    <h3 data-i18n="feat_5_title">Autopilot WhatsApp</h3>
+                    <p data-i18n="feat_5_desc">Genera mensajes automáticos con el número de tus clientes y abre WhatsApp Web con un solo clic.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3 data-i18n="feat_6_title">Multi-Empresa Seguro</h3>
+                    <p data-i18n="feat_6_desc">Datos separados por workspace. Seguridad a nivel empresarial para que tu información esté siempre protegida.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="pricing" class="pricing">
+        <div class="container">
+            <h2 class="section-title" data-i18n="price_title">Planes transparentes</h2>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <h3>Starter</h3>
+                    <div class="price">19€<span data-i18n="price_mo">/mes</span></div>
+                    <ul class="features-list">
+                        <li data-i18n="price_1_1">Hasta 50 clientes en CRM</li>
+                        <li data-i18n="price_1_2">Facturación completa (PDF)</li>
+                        <li data-i18n="price_1_3">Soporte estándar</li>
+                        <li data-i18n="price_1_4">Dashboard Básico</li>
+                    </ul>
+                    <a href="app.html#register" class="btn btn-outline" style="width: 100%;" data-i18n="price_btn_starter">Elegir Starter</a>
+                </div>
+                
+                <div class="pricing-card popular">
+                    <div class="popular-badge" data-i18n="price_badge">Más Elegido</div>
+                    <h3>Growth</h3>
+                    <div class="price">49€<span data-i18n="price_mo">/mes</span></div>
+                    <ul class="features-list">
+                        <li data-i18n="price_2_1">Hasta 500 clientes en CRM</li>
+                        <li data-i18n="price_2_2">Facturas y Presupuestos</li>
+                        <li data-i18n="price_2_3">Calendario avanzado</li>
+                        <li data-i18n="price_2_4">Automatización WhatsApp básica</li>
+                    </ul>
+                    <a href="app.html#register" class="btn btn-primary" style="width: 100%;" data-i18n="price_btn_growth">Elegir Growth</a>
+                </div>
+
+                <div class="pricing-card">
+                    <h3>Pro</h3>
+                    <div class="price">99€<span data-i18n="price_mo">/mes</span></div>
+                    <ul class="features-list">
+                        <li data-i18n="price_3_1">Clientes ilimitados</li>
+                        <li data-i18n="price_3_2">Todas las funciones</li>
+                        <li data-i18n="price_3_3">Métricas Avanzadas</li>
+                        <li data-i18n="price_3_4">Autopilot WhatsApp Pro</li>
+                    </ul>
+                    <a href="app.html#register" class="btn btn-outline" style="width: 100%;" data-i18n="price_btn_pro">Elegir Pro</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title" data-i18n="test_title">Lo que dicen nuestros clientes</h2>
+            <div class="features-grid">
+                <div class="testimonial-card">
+                    <span data-i18n="test_1">"Desde que usamos Nexora, la gestión de nuestras facturas y clientes ha mejorado drásticamente. Un diseño limpio y rápido."</span>
+                    <div class="testimonial-author">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--primary);"></div>
+                        <div class="author-info">
+                            <h4>Carlos López</h4>
+                            <p>CEO, TechSolutions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <span data-i18n="test_2">"Las automatizaciones con WhatsApp nos ahorran horas a la semana. Definitivamente el mejor SaaS que hemos probado."</span>
+                    <div class="testimonial-author">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--secondary);"></div>
+                        <div class="author-info">
+                            <h4>María Gómez</h4>
+                            <p data-i18n="test_role_2">Directora de Marketing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-col">
+                <div class="logo" style="margin-bottom: 1rem;">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+                    Nexora
+                </div>
+                <p style="color: var(--text-muted); font-size: 0.9rem;" data-i18n="footer_desc">El sistema operativo definitivo para gestionar tu negocio de manera profesional.</p>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_prod">Producto</h4>
+                <ul>
+                    <li><a href="#features" data-i18n="nav_features">Características</a></li>
+                    <li><a href="#pricing" data-i18n="nav_pricing">Precios</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4 data-i18n="footer_legal">Legal</h4>
+                <ul>
+                    <li><a href="#" onclick="showPrivacy(event)" data-i18n="footer_priv">Política de Privacidad</a></li>
+                    <li><a href="#" data-i18n="footer_term">Términos de Servicio</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            &copy; <span id="year">2026</span> Nexora Inc. <span data-i18n="footer_rights">Todos los derechos reservados.</span>
+        </div>
+    </footer>
+
+    <!-- Obligatory Cookie Modal -->
+    <div class="cookie-overlay" id="cookieBanner">
+        <div class="cookie-modal">
+            <h3 data-i18n="cookie_title">Aviso de Privacidad y Cookies</h3>
+            <p data-i18n="cookie_desc">Para ofrecerte la mejor experiencia en Nexora SaaS, utilizamos almacenamiento local estricto para asegurar tus datos y sesión. Es obligatorio aceptar estas condiciones para acceder a la aplicación.</p>
+            <button class="btn btn-primary" style="width: 100%;" onclick="acceptCookies()" data-i18n="cookie_btn">Entendido y Aceptar</button>
+        </div>
+    </div>
+
+    <!-- Privacy Policy Modal -->
+    <div class="privacy-modal" id="privacyModal">
+        <div class="privacy-content">
+            <h2 data-i18n="priv_title">Política de Privacidad</h2>
+            <p data-i18n="priv_p1">Bienvenido a Nexora. La privacidad de tus datos es nuestra principal prioridad.</p>
+            <p data-i18n="priv_p2"><strong>1. Arquitectura Local-First:</strong> Todos los datos introducidos se almacenan de forma segura en tu propio navegador mediante tecnologías como localStorage. No enviamos datos de tus clientes ni facturas a servidores externos de terceros sin tu explícito consentimiento.</p>
+            <p data-i18n="priv_p3"><strong>2. Separación Multitenant:</strong> Cada empresa opera en un entorno aislado. Los identificadores únicos garantizan que no haya fugas de información entre cuentas.</p>
+            <p data-i18n="priv_p4"><strong>3. Uso de la Información:</strong> Los datos se usan estrictamente para proporcionar el servicio de facturación, CRM y calendario dentro de la aplicación.</p>
+            <button class="btn btn-outline mt-4" onclick="closePrivacy()" data-i18n="priv_btn">Cerrar</button>
+        </div>
+    </div>
 
     <script>
-        // 🚀 CONFIGURACIÓN DE REDIRECCIÓN FINAL
-        // SUSTITUYE ESTA URL POR LA URL DE TU APP DESPLEGADA EN VERCEL
-        const APP_URL = "https://tu-app-nexora.vercel.app"; 
-
-        function goToApp() {
-            window.location.href = APP_URL;
-        }
-
         document.getElementById('year').textContent = new Date().getFullYear();
 
         // Cookies
@@ -198,25 +368,91 @@
         function showPrivacy(e) { e.preventDefault(); document.getElementById('privacyModal').style.display = 'flex'; }
         function closePrivacy() { document.getElementById('privacyModal').style.display = 'none'; }
 
-        // Theme and Lang logic (mantenida)
+        // Theme and Lang logic
         const dict = {
             es: {
                 nav_features: "Características", nav_pricing: "Precios", nav_login: "Iniciar Sesión", nav_start: "Comenzar Gratis",
                 hero_title: "El sistema operativo para tu <span>SaaS & Negocio</span>",
                 hero_desc: "Gestiona clientes, automatiza facturas y escala tus ingresos. Todo en un solo lugar, con un diseño premium y funcionalidades listas para producción.",
                 hero_btn1: "Empieza tu prueba gratuita", hero_btn2: "Ver funcionalidades",
-                /* ... resto de traducciones ... */
+                feat_title: "Todo lo que necesitas para crecer",
+                feat_1_title: "Smart CRM", feat_1_desc: "Gestiona todos tus clientes, leads y contactos en un entorno ordenado. Control total sobre el estado y notas.",
+                feat_2_title: "Facturación Completa", feat_2_desc: "Crea facturas con múltiples conceptos, cálculo automático de IVA y generación de PDF profesional. Directo desde la app.",
+                feat_3_title: "Calendario Integrado", feat_3_desc: "Organiza tus citas, vencimientos de facturas y eventos en un calendario visual y fácil de usar.",
+                feat_4_title: "Dashboard Profesional", feat_4_desc: "Visualiza tus ingresos, proyecciones y estado general de la empresa con gráficas dinámicas limpias.",
+                feat_5_title: "Autopilot WhatsApp", feat_5_desc: "Genera mensajes automáticos con el número de tus clientes y abre WhatsApp Web con un solo clic.",
+                feat_6_title: "Multi-Empresa Seguro", feat_6_desc: "Datos separados por workspace. Seguridad a nivel empresarial para que tu información esté siempre protegida.",
+                price_title: "Planes transparentes", price_mo: "/mes", price_badge: "Más Elegido",
+                price_1_1: "Hasta 50 clientes en CRM", price_1_2: "Facturación completa (PDF)", price_1_3: "Soporte estándar", price_1_4: "Dashboard Básico",
+                price_2_1: "Hasta 500 clientes en CRM", price_2_2: "Facturas y Presupuestos", price_2_3: "Calendario avanzado", price_2_4: "Automatización WhatsApp básica",
+                price_3_1: "Clientes ilimitados", price_3_2: "Todas las funciones", price_3_3: "Métricas Avanzadas", price_3_4: "Autopilot WhatsApp Pro",
+                price_btn_starter: "Elegir Starter", price_btn_growth: "Elegir Growth", price_btn_pro: "Elegir Pro",
+                test_title: "Lo que dicen nuestros clientes",
+                test_1: '"Desde que usamos Nexora, la gestión de nuestras facturas y clientes ha mejorado drásticamente. Un diseño limpio y rápido."',
+                test_2: '"Las automatizaciones con WhatsApp nos ahorran horas a la semana. Definitivamente el mejor SaaS que hemos probado."',
+                test_role_2: "Directora de Marketing",
+                footer_desc: "El sistema operativo definitivo para gestionar tu negocio de manera profesional.",
+                footer_prod: "Producto", footer_legal: "Legal", footer_priv: "Política de Privacidad", footer_term: "Términos de Servicio", footer_rights: "Todos los derechos reservados.",
+                cookie_title: "Aviso de Privacidad y Cookies", cookie_desc: "Para ofrecerte la mejor experiencia en Nexora SaaS, utilizamos almacenamiento local estricto para asegurar tus datos y sesión. Es obligatorio aceptar estas condiciones para acceder a la aplicación.", cookie_btn: "Entendido y Aceptar",
+                priv_title: "Política de Privacidad", priv_p1: "Bienvenido a Nexora. La privacidad de tus datos es nuestra principal prioridad.", priv_p2: "1. Arquitectura Local-First: Todos los datos introducidos se almacenan de forma segura en tu propio navegador mediante tecnologías como localStorage. No enviamos datos de tus clientes ni facturas a servidores externos de terceros sin tu explícito consentimiento.", priv_p3: "2. Separación Multitenant: Cada empresa opera en un entorno aislado. Los identificadores únicos garantizan que no haya fugas de información entre cuentas.", priv_p4: "3. Uso de la Información: Los datos se usan estrictamente para proporcionar el servicio de facturación, CRM y calendario dentro de la aplicación.", priv_btn: "Cerrar"
             },
             en: {
                 nav_features: "Features", nav_pricing: "Pricing", nav_login: "Login", nav_start: "Start for Free",
                 hero_title: "The operating system for your <span>SaaS & Business</span>",
                 hero_desc: "Manage clients, automate invoices, and scale your revenue. All in one place, with a premium design and production-ready features.",
                 hero_btn1: "Start your free trial", hero_btn2: "See features",
-                /* ... resto de traducciones ... */
+                feat_title: "Everything you need to grow",
+                feat_1_title: "Smart CRM", feat_1_desc: "Manage all your clients, leads, and contacts in an organized environment. Full control over status and notes.",
+                feat_2_title: "Full Invoicing", feat_2_desc: "Create invoices with multiple items, automatic VAT calculation, and professional PDF generation. Straight from the app.",
+                feat_3_title: "Integrated Calendar", feat_3_desc: "Organize your appointments, invoice due dates, and events in a visual and easy-to-use calendar.",
+                feat_4_title: "Pro Dashboard", feat_4_desc: "Visualize your revenue, projections, and overall business health with clean dynamic charts.",
+                feat_5_title: "WhatsApp Autopilot", feat_5_desc: "Generate automated messages with your clients' numbers and open WhatsApp Web with a single click.",
+                feat_6_title: "Secure Multi-Tenant", feat_6_desc: "Data separated by workspace. Enterprise-level security so your information is always protected.",
+                price_title: "Transparent plans", price_mo: "/mo", price_badge: "Most Chosen",
+                price_1_1: "Up to 50 CRM clients", price_1_2: "Full Invoicing (PDF)", price_1_3: "Standard Support", price_1_4: "Basic Dashboard",
+                price_2_1: "Up to 500 CRM clients", price_2_2: "Invoices and Quotes", price_2_3: "Advanced Calendar", price_2_4: "Basic WhatsApp Automation",
+                price_3_1: "Unlimited clients", price_3_2: "All features", price_3_3: "Advanced Metrics", price_3_4: "WhatsApp Autopilot Pro",
+                price_btn_starter: "Choose Starter", price_btn_growth: "Choose Growth", price_btn_pro: "Choose Pro",
+                test_title: "What our clients say",
+                test_1: '"Since we started using Nexora, our invoice and client management has improved drastically. Clean and fast design."',
+                test_2: '"WhatsApp automations save us hours every week. Definitely the best SaaS we\'ve tried."',
+                test_role_2: "Marketing Director",
+                footer_desc: "The ultimate operating system to manage your business professionally.",
+                footer_prod: "Product", footer_legal: "Legal", footer_priv: "Privacy Policy", footer_term: "Terms of Service", footer_rights: "All rights reserved.",
+                cookie_title: "Privacy and Cookie Notice", cookie_desc: "To offer you the best experience on Nexora SaaS, we use strict local storage to secure your data and session. You must accept these conditions to access the application.", cookie_btn: "Understood & Accept",
+                priv_title: "Privacy Policy", priv_p1: "Welcome to Nexora. Your data privacy is our main priority.", priv_p2: "1. Local-First Architecture: All entered data is securely stored in your own browser using technologies like localStorage. We do not send your client data or invoices to third-party external servers without your explicit consent.", priv_p3: "2. Multi-tenant Separation: Each company operates in an isolated environment. Unique identifiers ensure there are no data leaks between accounts.", priv_p4: "3. Information Usage: Data is strictly used to provide the invoicing, CRM, and calendar service within the application.", priv_btn: "Close"
             }
         };
 
-        // ... resto de lógica de i18n y tema ...
+        // Theme Init
+        let isDark = localStorage.getItem('nx_theme') === 'dark';
+        if(isDark) { document.documentElement.setAttribute('data-theme', 'dark'); document.getElementById('theme-btn').textContent = '☀️'; }
+
+        function toggleTheme() {
+            isDark = !isDark;
+            if(isDark) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('nx_theme', 'dark');
+                document.getElementById('theme-btn').textContent = '☀️';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                localStorage.setItem('nx_theme', 'light');
+                document.getElementById('theme-btn').textContent = '🌙';
+            }
+        }
+
+        // Lang Init
+        let lang = localStorage.getItem('nx_lang') || 'es';
+        document.getElementById('lang-btn').textContent = lang === 'es' ? 'EN' : 'ES';
+        applyLang();
+
+        function toggleLang() {
+            lang = lang === 'es' ? 'en' : 'es';
+            localStorage.setItem('nx_lang', lang);
+            document.getElementById('lang-btn').textContent = lang === 'es' ? 'EN' : 'ES';
+            applyLang();
+        }
+
         function applyLang() {
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.getAttribute('data-i18n');
@@ -225,8 +461,6 @@
                 }
             });
         }
-        let lang = localStorage.getItem('nx_lang') || 'es';
-        applyLang();
     </script>
 </body>
 </html>

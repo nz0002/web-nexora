@@ -1,0 +1,1245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Nexora SaaS - Premium App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            /* Minimalist Premium Pastel Palette */
+            --primary: #8b9be2; /* Pastel Indigo */
+            --primary-hover: #7888d0;
+            --secondary: #bba6e6; /* Pastel Violet */
+            --bg: #faf9f8; /* Soft Beige/Off-white */
+            --card-bg: #ffffff;
+            --text-main: #334155;
+            --text-soft: #64748b;
+            --border: #f1f5f9;
+            --border-strong: #e2e8f0;
+            --success: #6ee7b7;
+            --warning: #fcd34d;
+            --danger: #fca5a5;
+            --shadow: 0 10px 30px -5px rgba(0,0,0,0.03);
+            --radius: 16px;
+            --transition: all 0.3s ease;
+            --sidebar-width: 260px;
+        }
+
+        [data-theme="dark"] {
+            --primary: #7888d0;
+            --primary-hover: #8b9be2;
+            --secondary: #a088d0;
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-soft: #94a3b8;
+            --border: #334155;
+            --border-strong: #475569;
+            --shadow: 0 10px 30px -5px rgba(0,0,0,0.3);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text-main); height: 100vh; overflow: hidden; display: flex; transition: background-color 0.3s; }
+
+        /* Typography */
+        h1, h2, h3, h4 { color: var(--text-main); font-weight: 600; }
+        p { color: var(--text-soft); }
+
+        /* Helpers */
+        .hidden { display: none !important; }
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+        .gap-4 { gap: 1rem; }
+        .gap-2 { gap: 0.5rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mt-4 { margin-top: 1rem; }
+        .text-center { text-align: center; }
+        
+        /* Buttons */
+        .btn { padding: 0.8rem 1.5rem; border-radius: 12px; border: none; font-weight: 600; cursor: pointer; transition: var(--transition); font-size: 0.95rem; display: inline-flex; justify-content: center; align-items: center; gap: 8px; }
+        .btn-primary { background: var(--primary); color: white; box-shadow: 0 4px 15px rgba(139, 155, 226, 0.3); }
+        .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(139, 155, 226, 0.4); }
+        .btn-outline { background: transparent; border: 1px solid var(--border-strong); color: var(--text-main); }
+        .btn-outline:hover { border-color: var(--primary); color: var(--primary); background: rgba(139, 155, 226, 0.05); }
+        .btn-danger { background: var(--danger); color: white; }
+
+        /* Inputs */
+        input, select, textarea { width: 100%; padding: 0.9rem 1rem; border-radius: 12px; border: 1px solid var(--border-strong); margin-top: 0.5rem; font-size: 0.95rem; background: var(--bg); color: var(--text-main); transition: var(--transition); }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(139, 155, 226, 0.15); }
+        label { font-size: 0.85rem; font-weight: 600; color: var(--text-soft); }
+        .checkbox-container { display: flex; align-items: center; gap: 8px; margin-top: 1rem; }
+        .checkbox-container input { width: auto; margin: 0; width: 18px; height: 18px; accent-color: var(--primary); }
+
+        /* Card */
+        .card { background: var(--card-bg); border-radius: var(--radius); padding: 1.5rem; border: 1px solid var(--border); box-shadow: var(--shadow); transition: var(--transition); }
+
+        /* Auth View */
+        #auth-view { width: 100%; height: 100vh; display: flex; justify-content: center; align-items: center; background: var(--bg); padding: 1rem; }
+        .auth-box { width: 100%; max-width: 420px; padding: 2.5rem 2rem; }
+        
+        /* App Layout */
+        #app-layout { width: 100%; height: 100%; display: flex; position: relative; }
+        
+        /* Sidebar */
+        aside { width: var(--sidebar-width); background: var(--card-bg); border-right: 1px solid var(--border-strong); display: flex; flex-direction: column; transition: transform 0.3s ease; z-index: 50; }
+        .brand { padding: 1.5rem; font-size: 1.5rem; font-weight: 700; color: var(--primary); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .nav-items { flex: 1; overflow-y: auto; padding: 1rem; }
+        .nav-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 0.85rem 1rem; border: none; background: transparent; color: var(--text-soft); font-weight: 500; text-align: left; border-radius: 12px; cursor: pointer; transition: 0.2s; margin-bottom: 0.5rem; font-size: 0.95rem; }
+        .nav-btn:hover, .nav-btn.active { background: rgba(139, 155, 226, 0.1); color: var(--primary); font-weight: 600; }
+        .user-info { padding: 1.5rem; border-top: 1px solid var(--border); }
+        .sidebar-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 40; backdrop-filter: blur(2px); }
+
+        /* Main Area */
+        main { flex: 1; display: flex; flex-direction: column; background: var(--bg); overflow: hidden; width: calc(100% - var(--sidebar-width)); }
+        header { padding: 1.2rem 2rem; background: var(--card-bg); border-bottom: 1px solid var(--border-strong); display: flex; justify-content: space-between; align-items: center; z-index: 10; }
+        .content { flex: 1; padding: 2rem; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        
+        .top-controls { display: flex; align-items: center; gap: 1rem; }
+        .icon-btn { background: var(--bg); border: 1px solid var(--border-strong); color: var(--text-soft); cursor: pointer; font-size: 1.1rem; width: 40px; height: 40px; border-radius: 50%; display: flex; justify-content: center; align-items: center; transition: var(--transition); }
+        .icon-btn:hover { color: var(--primary); border-color: var(--primary); }
+        .hamburger { display: none; background: transparent; border: none; font-size: 1.5rem; color: var(--text-main); cursor: pointer; }
+
+        /* Views */
+        .view { display: none; animation: fadeIn 0.4s ease; }
+        .view.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Tables (Responsive) */
+        .table-responsive { overflow-x: auto; width: 100%; -webkit-overflow-scrolling: touch; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th, td { padding: 1.2rem 1rem; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-size: 0.85rem; color: var(--text-soft); text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+        
+        /* Badges */
+        .badge { padding: 6px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: inline-block; }
+        .badge-success { background: rgba(110, 231, 183, 0.2); color: #059669; }
+        .badge-warning { background: rgba(252, 211, 77, 0.2); color: #d97706; }
+        .badge-primary { background: rgba(139, 155, 226, 0.2); color: var(--primary); }
+
+        /* Modals */
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; justify-content: center; align-items: center; z-index: 1000; padding: 1rem; }
+        .modal { background: var(--card-bg); padding: 2.5rem; border-radius: var(--radius); width: 100%; max-width: 500px; max-height: 90vh; overflow-y: auto; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        /* Toast */
+        #toast-container { position: fixed; bottom: 20px; right: 20px; z-index: 2000; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+        .toast { background: var(--card-bg); color: var(--text-main); border: 1px solid var(--border-strong); border-left: 4px solid var(--primary); padding: 1rem 1.5rem; border-radius: 12px; box-shadow: var(--shadow); animation: slideIn 0.3s; font-weight: 500; font-size: 0.95rem; pointer-events: auto; }
+        @keyframes slideIn { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+        
+        /* Grids */
+        .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.5rem; }
+        .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; }
+
+        /* Invoice Split View */
+        .invoice-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .invoice-form-area { display: flex; flex-direction: column; gap: 1rem; }
+        .invoice-preview-area { background: var(--bg); padding: 2rem; border-radius: var(--radius); border: 1px solid var(--border-strong); display: flex; justify-content: center; align-items: flex-start; overflow-x: auto; }
+        .invoice-paper { background: white; color: black; width: 100%; max-width: 210mm; min-width: 180mm; padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); font-family: 'Helvetica', sans-serif; border-radius: 4px; }
+        
+        /* Invoice Paper Styles */
+        .ip-header { display: flex; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 20px; margin-bottom: 30px; }
+        .ip-title { font-size: 28px; color: #666; text-transform: uppercase; margin-bottom: 5px; letter-spacing: 2px; }
+        .ip-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .ip-table th { border-bottom: 2px solid #333; padding: 12px; text-align: left; color: #333; font-size: 12px; }
+        .ip-table td { border-bottom: 1px solid #eee; padding: 12px; font-size: 14px; }
+        .ip-totals { width: 300px; margin-left: auto; border-top: 1px solid #333; padding-top: 15px; }
+        .ip-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 14px; color: #555; }
+        .ip-row.total { font-weight: bold; font-size: 20px; border-top: 2px solid #333; padding-top: 10px; margin-top: 10px; color: #000; }
+
+        .invoice-print { display: none; }
+        @media print {
+            body * { visibility: hidden; }
+            #print-paper, #print-paper * { visibility: visible; }
+            #print-paper { position: absolute; left: 0; top: 0; width: 100%; background: white; padding: 0; box-shadow: none; min-width: 100%; }
+        }
+
+        /* Calendar */
+        .cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+        .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; }
+        .cal-day-header { text-align: center; font-weight: 600; color: var(--text-soft); font-size: 0.85rem; padding-bottom: 10px; }
+        .cal-day { background: var(--card-bg); border: 1px solid var(--border-strong); border-radius: 12px; min-height: 100px; padding: 8px; display: flex; flex-direction: column; gap: 4px; transition: var(--transition); }
+        .cal-day:hover { border-color: var(--primary); }
+        .cal-day.empty { background: transparent; border-color: transparent; }
+        .cal-date-num { font-weight: 600; font-size: 0.9rem; margin-bottom: 4px; color: var(--text-main); }
+        .cal-event { background: var(--primary); color: white; font-size: 0.75rem; padding: 4px 8px; border-radius: 6px; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .cal-event.invoice { background: var(--warning); color: #78350f; }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1024px) {
+            .invoice-layout { grid-template-columns: 1fr; }
+        }
+        
+        @media (max-width: 768px) {
+            aside { position: fixed; height: 100vh; transform: translateX(-100%); }
+            aside.open { transform: translateX(0); }
+            main { width: 100%; }
+            .hamburger { display: block; }
+            .sidebar-overlay.show { display: block; }
+            .grid-4, .grid-2 { grid-template-columns: 1fr; }
+            header { padding: 1rem; }
+            .content { padding: 1rem; }
+            .cal-day { min-height: 80px; }
+            .cal-event { padding: 2px 4px; font-size: 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast-container"></div>
+
+    <!-- AUTHENTICATION -->
+    <div id="auth-view">
+        <!-- Login -->
+        <div id="login-box" class="auth-box card">
+            <div class="flex justify-between items-center mb-6">
+                <h2 style="color: var(--primary); font-size: 2rem; font-weight: 700;">Nexora</h2>
+                <div class="flex gap-2">
+                    <button class="icon-btn" onclick="toggleTheme()" id="auth-theme-btn">🌙</button>
+                    <button class="icon-btn" onclick="toggleLang()" id="auth-lang-btn">EN</button>
+                </div>
+            </div>
+            <p class="text-center mb-6" style="color: var(--text-soft);" data-i18n="auth_login_sub">Inicia sesión en tu cuenta</p>
+            <form id="login-form">
+                <div class="mb-4">
+                    <label data-i18n="auth_email">Email Profesional</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="mb-4">
+                    <label data-i18n="auth_pwd">Contraseña</label>
+                    <input type="password" id="login-pwd" required>
+                </div>
+                <div class="checkbox-container mb-6">
+                    <input type="checkbox" id="login-remember">
+                    <label for="login-remember" style="font-weight: 500;" data-i18n="auth_remember">Recordar sesión</label>
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;" data-i18n="auth_btn_login">Entrar a mi cuenta</button>
+            </form>
+            <p class="text-center mt-6" style="font-size: 0.9rem;">
+                <span data-i18n="auth_no_account">¿No tienes cuenta?</span> <a href="#" onclick="toggleAuth('register')" style="color: var(--primary); font-weight: 600; text-decoration: none;" data-i18n="auth_go_register">Regístrate gratis</a>
+            </p>
+        </div>
+
+        <!-- Register -->
+        <div id="register-box" class="auth-box card hidden">
+            <h2 style="color: var(--primary); font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;" class="text-center">Nexora</h2>
+            <p class="text-center mb-6" style="color: var(--text-soft);" data-i18n="auth_reg_sub">Crea tu Workspace</p>
+            <form id="register-form">
+                <div class="mb-4">
+                    <label data-i18n="auth_company">Nombre de la Empresa</label>
+                    <input type="text" id="reg-company" required>
+                </div>
+                <div class="mb-4">
+                    <label data-i18n="auth_name">Tu Nombre</label>
+                    <input type="text" id="reg-name" required>
+                </div>
+                <div class="mb-4">
+                    <label data-i18n="auth_email">Email Profesional</label>
+                    <input type="email" id="reg-email" required>
+                </div>
+                <div class="mb-4">
+                    <label data-i18n="auth_pwd">Contraseña segura</label>
+                    <input type="password" id="reg-pwd" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary mt-2" style="width: 100%;" data-i18n="auth_btn_reg">Comenzar Prueba Gratis</button>
+            </form>
+            <p class="text-center mt-6" style="font-size: 0.9rem;">
+                <span data-i18n="auth_has_account">¿Ya tienes cuenta?</span> <a href="#" onclick="toggleAuth('login')" style="color: var(--primary); font-weight: 600; text-decoration: none;" data-i18n="auth_go_login">Inicia sesión</a>
+            </p>
+        </div>
+    </div>
+
+    <!-- MAIN APP LAYOUT -->
+    <div id="app-layout" class="hidden">
+        <div class="sidebar-overlay" onclick="toggleSidebar()"></div>
+        <aside id="sidebar">
+            <div class="brand">
+                Nexora
+                <button class="hamburger" onclick="toggleSidebar()" style="font-size: 1.2rem;">✕</button>
+            </div>
+            <div class="nav-items" id="nav-container">
+                <!-- User Nav -->
+                <div id="nav-user">
+                    <button class="nav-btn active" onclick="navigate('dashboard')">📊 <span data-i18n="nav_dash">Dashboard</span></button>
+                    <button class="nav-btn" onclick="navigate('clients')">👥 <span data-i18n="nav_crm">CRM Clientes</span></button>
+                    <button class="nav-btn" onclick="navigate('invoices')">📄 <span data-i18n="nav_inv">Facturas</span></button>
+                    <button class="nav-btn" onclick="navigate('calendar')">📅 <span data-i18n="nav_cal">Calendario</span></button>
+                    <button class="nav-btn" onclick="navigate('whatsapp')">💬 <span data-i18n="nav_wa">Autopilot WA</span></button>
+                    <button class="nav-btn" onclick="navigate('billing')">💳 <span data-i18n="nav_bill">Suscripción</span></button>
+                </div>
+                <!-- Admin Nav -->
+                <div id="nav-admin" class="hidden">
+                    <p style="font-size:0.75rem; color: var(--danger); font-weight:bold; margin-bottom:10px; padding: 0 1rem;">PANEL ADMIN GLOBAL</p>
+                    <button class="nav-btn active" onclick="navigate('admin-dash')">🌐 Empresas</button>
+                    <button class="nav-btn" onclick="navigate('admin-requests')">🔔 Solicitudes</button>
+                </div>
+            </div>
+            <div class="user-info">
+                <p id="ui-company" style="font-weight: 700; color: var(--text-main); margin-bottom: 2px;">Empresa</p>
+                <p id="ui-user" style="color: var(--text-soft); font-size: 0.8rem;">Usuario</p>
+                <p id="ui-plan" class="badge badge-primary mt-3" style="font-size: 0.7rem;">Plan Prueba</p>
+                <button onclick="logout()" class="btn btn-outline mt-4" style="width:100%; padding:0.6rem; font-size: 0.85rem;" data-i18n="nav_logout">Cerrar Sesión</button>
+            </div>
+        </aside>
+
+        <main>
+            <header>
+                <div class="flex items-center gap-4">
+                    <button class="hamburger" onclick="toggleSidebar()">☰</button>
+                    <h2 id="header-title" data-i18n="nav_dash" style="font-size: 1.25rem;">Dashboard</h2>
+                </div>
+                <div class="top-controls">
+                    <button class="icon-btn" onclick="toggleTheme()" id="app-theme-btn" title="Tema">🌙</button>
+                    <button class="icon-btn" onclick="toggleLang()" id="app-lang-btn" title="Idioma">EN</button>
+                </div>
+            </header>
+
+            <div class="content">
+                <!-- VIEW: DASHBOARD -->
+                <div id="view-dashboard" class="view active">
+                    <div id="trial-warning" class="card hidden mb-6" style="background: rgba(252, 211, 77, 0.1); border-color: var(--warning);">
+                        <div class="flex justify-between items-center flex-wrap gap-4">
+                            <div>
+                                <h3 style="color: #d97706; margin-bottom: 4px;" data-i18n="trial_warn_title">Estás en el Plan de Prueba</h3>
+                                <p style="color: var(--text-main); font-size: 0.95rem;" data-i18n="trial_warn_desc">Tienes un límite máximo de clientes. Para desbloquear todo el potencial, elige un plan profesional.</p>
+                            </div>
+                            <button class="btn btn-primary" onclick="navigate('billing')" data-i18n="trial_warn_btn">Ver Planes</button>
+                        </div>
+                    </div>
+                    <div class="grid-4 mb-6">
+                        <div class="card"><p data-i18n="kpi_income" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Ingresos Totales</p><h2 id="kpi-income" style="font-size: 1.8rem; margin-top: 5px;">0 €</h2></div>
+                        <div class="card"><p data-i18n="kpi_clients" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Total Clientes</p><h2 id="kpi-clients" style="font-size: 1.8rem; margin-top: 5px;">0</h2></div>
+                        <div class="card"><p data-i18n="kpi_inv" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Facturas Emitidas</p><h2 id="kpi-invoices" style="font-size: 1.8rem; margin-top: 5px;">0</h2></div>
+                        <div class="card"><p data-i18n="kpi_limit" style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Límite Clientes</p><h2 id="kpi-limit" style="font-size: 1.8rem; margin-top: 5px;">2</h2></div>
+                    </div>
+                    <div class="card">
+                        <h3 class="mb-4" data-i18n="dash_chart">Evolución de Facturación</h3>
+                        <div style="position: relative; height: 300px; width: 100%;">
+                            <canvas id="income-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: CLIENTS -->
+                <div id="view-clients" class="view">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                        <input type="text" id="search-client" placeholder="Buscar cliente..." style="width: 100%; max-width: 350px; margin:0;" oninput="renderClients()">
+                        <button class="btn btn-primary" onclick="openClientModal()" data-i18n="btn_add_client">+ Añadir Cliente</button>
+                    </div>
+                    <div class="card" style="padding:0;">
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr><th data-i18n="th_name">Nombre</th><th data-i18n="th_phone">Teléfono</th><th data-i18n="th_email">Email</th><th data-i18n="th_actions">Acciones</th></tr></thead>
+                                <tbody id="table-clients"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: INVOICES -->
+                <div id="view-invoices" class="view">
+                    <div class="flex justify-between items-center mb-6 flex-wrap gap-4">
+                        <h3 data-i18n="inv_title" style="font-size: 1.2rem;">Historial de Facturación</h3>
+                        <button class="btn btn-primary" onclick="openInvoiceBuilder()" data-i18n="btn_add_inv">+ Crear Factura</button>
+                    </div>
+                    <div class="card" style="padding:0;">
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr><th data-i18n="th_num">Número</th><th data-i18n="th_client">Cliente</th><th data-i18n="th_date">Vencimiento</th><th data-i18n="th_total">Total</th><th data-i18n="th_actions">Acciones</th></tr></thead>
+                                <tbody id="table-invoices"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: INVOICE BUILDER -->
+                <div id="view-invoice-builder" class="view">
+                    <button class="btn btn-outline mb-6" onclick="navigate('invoices')" data-i18n="btn_back">← Volver</button>
+                    <div class="invoice-layout">
+                        <!-- Left: Form -->
+                        <div class="invoice-form-area">
+                            <div class="card">
+                                <h3 class="mb-4" data-i18n="inv_build_title">Configuración de Factura</h3>
+                                <div class="grid-2 mb-4">
+                                    <div>
+                                        <label data-i18n="lbl_client">Cliente</label>
+                                        <select id="inv-client" onchange="updatePreview()"></select>
+                                    </div>
+                                    <div>
+                                        <label data-i18n="lbl_inv_num">Número Factura</label>
+                                        <input type="text" id="inv-num" oninput="updatePreview()">
+                                    </div>
+                                </div>
+                                <div class="grid-2 mb-4">
+                                    <div>
+                                        <label data-i18n="lbl_inv_due">Fecha Vencimiento</label>
+                                        <input type="date" id="inv-due" onchange="updatePreview()">
+                                    </div>
+                                    <div>
+                                        <label data-i18n="lbl_iva">IVA Aplicable (%)</label>
+                                        <select id="inv-tax" onchange="updatePreview()">
+                                            <option value="0">0% (Sin IVA)</option>
+                                            <option value="10">10% (Reducido)</option>
+                                            <option value="21" selected>21% (General)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card">
+                                <h4 class="mb-4" data-i18n="inv_lines">Líneas de Factura</h4>
+                                <div id="inv-form-lines"></div>
+                                <button class="btn btn-outline mt-4" onclick="addInvoiceLineForm()" style="width:100%" data-i18n="btn_add_line">+ Añadir Concepto</button>
+                            </div>
+
+                            <div class="card">
+                                <button class="btn btn-primary" onclick="saveInvoice()" style="width:100%; font-size: 1.1rem; padding: 1rem;" data-i18n="btn_save_inv">Guardar y Emitir Factura</button>
+                            </div>
+                        </div>
+
+                        <!-- Right: Preview -->
+                        <div class="invoice-preview-area">
+                            <div class="invoice-paper" id="print-paper">
+                                <div class="ip-header">
+                                    <div>
+                                        <h1 style="margin-bottom: 5px; font-size: 24px;" id="pv-company">Empresa</h1>
+                                        <p style="color: #666; font-size: 12px;" id="pv-company-email">email@empresa.com</p>
+                                    </div>
+                                    <div style="text-align: right;">
+                                        <div class="ip-title">Factura</div>
+                                        <p style="font-weight: bold; font-size: 16px; margin-bottom: 4px;" id="pv-num">INV-000</p>
+                                        <p style="color: #666; font-size: 12px;" id="pv-date">Vencimiento: 01/01/2026</p>
+                                    </div>
+                                </div>
+                                <div style="margin-bottom: 30px; background: #f8fafc; padding: 15px; border-radius: 8px;">
+                                    <p style="font-size: 11px; color: #64748b; text-transform: uppercase; font-weight: bold; margin-bottom: 5px;">Facturar a:</p>
+                                    <h3 style="font-size: 16px; color: #0f172a;" id="pv-client">Cliente Seleccionado</h3>
+                                </div>
+                                <table class="ip-table">
+                                    <thead><tr><th style="width:50%">Descripción</th><th style="text-align:center;">Cant.</th><th style="text-align:right;">Precio Ud.</th><th style="text-align:right;">Subtotal</th></tr></thead>
+                                    <tbody id="pv-lines"></tbody>
+                                </table>
+                                <div class="ip-totals">
+                                    <div class="ip-row"><span>Subtotal Base:</span><span id="pv-subtotal">0.00 €</span></div>
+                                    <div class="ip-row"><span>IVA (<span id="pv-tax-lbl">21</span>%):</span><span id="pv-tax-val">0.00 €</span></div>
+                                    <div class="ip-row total"><span>TOTAL:</span><span id="pv-total">0.00 €</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW: CALENDAR -->
+                <div id="view-calendar" class="view">
+                    <div class="card mb-6">
+                        <div class="cal-header">
+                            <button class="btn btn-outline" onclick="changeMonth(-1)">← <span data-i18n="cal_prev">Ant.</span></button>
+                            <h3 id="cal-month-label" style="text-transform: uppercase; letter-spacing: 1px;">Mes Año</h3>
+                            <button class="btn btn-outline" onclick="changeMonth(1)"><span data-i18n="cal_next">Sig.</span> →</button>
+                        </div>
+                        <div class="cal-grid">
+                            <div class="cal-day-header">Lun</div><div class="cal-day-header">Mar</div><div class="cal-day-header">Mié</div>
+                            <div class="cal-day-header">Jue</div><div class="cal-day-header">Vie</div><div class="cal-day-header" style="color: var(--primary);">Sáb</div><div class="cal-day-header" style="color: var(--primary);">Dom</div>
+                        </div>
+                        <div id="calendar-grid" class="cal-grid"></div>
+                    </div>
+                    <div class="card">
+                        <div class="flex justify-between items-center mb-4 flex-wrap gap-4">
+                            <h3 data-i18n="cal_add_title">Añadir Evento</h3>
+                        </div>
+                        <form id="event-form" onsubmit="saveEvent(event)" class="grid-4">
+                            <div><label data-i18n="cal_lbl_title">Título</label><input type="text" id="ev-title" required></div>
+                            <div><label data-i18n="cal_lbl_date">Fecha</label><input type="date" id="ev-date" required></div>
+                            <div><label data-i18n="lbl_client">Cliente Vinculado</label><select id="ev-client"><option value="">Ninguno</option></select></div>
+                            <div style="display: flex; align-items: flex-end;"><button type="submit" class="btn btn-primary" style="width: 100%;" data-i18n="btn_save">Guardar Evento</button></div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- VIEW: WHATSAPP -->
+                <div id="view-whatsapp" class="view">
+                    <div class="card" style="max-width: 600px; margin: 0 auto;">
+                        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem;">
+                            <div style="background: #25D366; color: white; width: 48px; height: 48px; border-radius: 12px; display: flex; justify-content: center; align-items: center; font-size: 1.5rem;">💬</div>
+                            <div>
+                                <h3 style="color: #25D366;" data-i18n="wa_title">Autopilot WhatsApp</h3>
+                                <p style="font-size: 0.9rem;" data-i18n="wa_desc">Genera mensajes rápidos y ábrelos en WhatsApp Web.</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label data-i18n="lbl_client">Seleccionar Cliente</label>
+                            <select id="wa-client" onchange="updateWaPhone()"></select>
+                        </div>
+                        <div class="mb-4">
+                            <label data-i18n="wa_lbl_phone">Teléfono (con prefijo, ej. 34)</label>
+                            <input type="text" id="wa-phone">
+                        </div>
+                        <div class="mb-4">
+                            <label data-i18n="wa_lbl_template">Plantilla rápida</label>
+                            <select id="wa-template" onchange="applyWaTemplate()">
+                                <option value="" data-i18n="wa_opt_custom">Personalizado...</option>
+                                <option value="recordatorio" data-i18n="wa_opt_remind">Recordatorio de Cita</option>
+                                <option value="factura" data-i18n="wa_opt_inv">Aviso de Factura</option>
+                                <option value="seguimiento" data-i18n="wa_opt_follow">Seguimiento de Interés</option>
+                            </select>
+                        </div>
+                        <div class="mb-6">
+                            <label data-i18n="wa_lbl_msg">Mensaje</label>
+                            <textarea id="wa-msg" rows="5"></textarea>
+                        </div>
+                        <button class="btn" style="background:#25D366; color:white; width: 100%; font-size: 1.1rem; padding: 1rem;" onclick="sendWhatsApp()" data-i18n="wa_btn_send">Abrir en WhatsApp Web</button>
+                    </div>
+                </div>
+
+                <!-- VIEW: BILLING -->
+                <div id="view-billing" class="view">
+                    <div class="card mb-6 text-center" style="background: linear-gradient(135deg, var(--bg), var(--card-bg));">
+                        <h3 data-i18n="bill_curr_plan" style="margin-bottom: 0.5rem; font-size: 1.1rem; font-weight: 500;">Plan Actual:</h3>
+                        <div id="bill-current-plan" class="badge badge-primary" style="font-size:1.5rem; padding: 8px 20px; margin-bottom: 1rem;">Prueba</div>
+                        <p class="text-soft"><span data-i18n="bill_usage">Uso de clientes:</span> <strong id="bill-usage" style="color:var(--text-main); font-size: 1.1rem;">0</strong> / <strong id="bill-limit" style="font-size: 1.1rem;">2</strong></p>
+                    </div>
+                    <div class="grid-4" id="billing-plans"></div>
+                </div>
+
+                <!-- VIEW ADMIN: DASHBOARD -->
+                <div id="view-admin-dash" class="view">
+                    <h3 class="mb-6 text-danger">Panel de Control Global</h3>
+                    <div class="card" style="padding:0;">
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr><th>Empresa</th><th>Email Dueño</th><th>Plan Actual</th></tr></thead>
+                                <tbody id="table-admin-ws"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW ADMIN: REQUESTS -->
+                <div id="view-admin-requests" class="view">
+                    <h3 class="mb-6 text-danger">Solicitudes de Cambio de Plan</h3>
+                    <div class="card" style="padding:0;">
+                        <div class="table-responsive">
+                            <table>
+                                <thead><tr><th>Empresa</th><th>Plan Actual</th><th>Solicitado</th><th>Acciones</th></tr></thead>
+                                <tbody id="table-admin-req"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- MODAL: CLIENT FORM -->
+    <div id="modal-client-form" class="modal-overlay hidden">
+        <div class="modal">
+            <h3 class="mb-6" data-i18n="mod_client_title" style="font-size: 1.5rem;">Ficha de Cliente</h3>
+            <form id="client-form" onsubmit="saveClient(event)">
+                <input type="hidden" id="client-id">
+                <div class="mb-4"><label data-i18n="th_name">Nombre Completo</label><input type="text" id="client-name" required></div>
+                <div class="mb-4"><label data-i18n="th_phone">Teléfono</label><input type="text" id="client-phone"></div>
+                <div class="mb-6"><label data-i18n="th_email">Email</label><input type="email" id="client-email"></div>
+                <div class="flex justify-between gap-4">
+                    <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeModal('modal-client-form')" data-i18n="btn_cancel">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" style="flex:1;" data-i18n="btn_save">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL: LIMIT WARNING -->
+    <div id="modal-limit" class="modal-overlay hidden">
+        <div class="modal" style="text-align: center; max-width: 450px;">
+            <div style="font-size: 3.5rem; margin-bottom: 1.5rem; display: inline-block; background: rgba(252, 211, 77, 0.2); padding: 1rem; border-radius: 50%;">🚀</div>
+            <h3 class="mb-3" data-i18n="lim_title" style="font-size: 1.5rem;">Límite Alcanzado</h3>
+            <p class="mb-6" style="color: var(--text-soft); line-height: 1.6;" data-i18n="lim_desc">Has alcanzado el límite de clientes de tu plan actual. Para seguir creciendo y desbloquear todo el potencial, necesitas actualizar tu suscripción.</p>
+            <button class="btn btn-primary" style="width: 100%; margin-bottom: 0.8rem; font-size: 1.05rem;" onclick="closeModal('modal-limit'); navigate('billing');" data-i18n="lim_btn">Ver Planes Profesionales</button>
+            <button class="btn btn-outline" style="width: 100%; border: none;" onclick="closeModal('modal-limit')" data-i18n="btn_cancel">Cancelar</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Translations ---
+        const dict = {
+            es: {
+                auth_login_sub: "Inicia sesión en tu cuenta", auth_email: "Email Profesional", auth_pwd: "Contraseña", auth_remember: "Recordar sesión", auth_btn_login: "Entrar a mi cuenta", auth_no_account: "¿No tienes cuenta?", auth_go_register: "Regístrate gratis",
+                auth_reg_sub: "Crea tu Workspace", auth_company: "Nombre Empresa", auth_name: "Tu Nombre", auth_btn_reg: "Comenzar Prueba Gratis", auth_has_account: "¿Ya tienes cuenta?", auth_go_login: "Inicia sesión",
+                nav_dash: "Dashboard", nav_crm: "CRM Clientes", nav_inv: "Facturas", nav_cal: "Calendario", nav_wa: "Autopilot WA", nav_bill: "Suscripción", nav_logout: "Cerrar Sesión",
+                trial_warn_title: "Estás en el Plan de Prueba", trial_warn_desc: "Tienes un límite máximo de clientes. Para desbloquear todo el potencial, elige un plan profesional.", trial_warn_btn: "Ver Planes",
+                kpi_income: "Ingresos Totales", kpi_clients: "Total Clientes", kpi_inv: "Facturas Emitidas", kpi_limit: "Límite Clientes", dash_chart: "Evolución de Facturación",
+                btn_add_client: "+ Añadir Cliente", th_name: "Nombre", th_phone: "Teléfono", th_email: "Email", th_actions: "Acciones",
+                inv_title: "Historial de Facturación", btn_add_inv: "+ Crear Factura", th_num: "Número", th_client: "Cliente", th_date: "Vencimiento", th_total: "Total", btn_back: "← Volver",
+                inv_build_title: "Configuración de Factura", lbl_client: "Cliente", lbl_inv_num: "Número", lbl_inv_due: "Fecha Vencimiento", lbl_iva: "IVA Aplicable (%)", inv_lines: "Líneas de Factura", btn_add_line: "+ Añadir Concepto", btn_save_inv: "Guardar y Emitir Factura",
+                cal_prev: "Ant.", cal_next: "Sig.", cal_add_title: "Añadir Evento", cal_lbl_title: "Título", cal_lbl_date: "Fecha",
+                wa_title: "Autopilot WhatsApp", wa_desc: "Genera mensajes rápidos y ábrelos en WhatsApp Web.", wa_lbl_phone: "Teléfono (con prefijo, ej. 34)", wa_lbl_template: "Plantilla rápida", wa_opt_custom: "Personalizado...", wa_opt_remind: "Recordatorio de Cita", wa_opt_inv: "Aviso de Factura", wa_opt_follow: "Seguimiento de Interés", wa_lbl_msg: "Mensaje", wa_btn_send: "Abrir en WhatsApp Web",
+                bill_curr_plan: "Plan Actual:", bill_usage: "Uso de clientes:", btn_req_plan: "Solicitar Cambio", btn_curr_plan: "Plan Actual",
+                mod_client_title: "Ficha de Cliente", btn_cancel: "Cancelar", btn_save: "Guardar",
+                lim_title: "Límite Alcanzado", lim_desc: "Has alcanzado el límite de clientes de tu plan actual. Para seguir creciendo y desbloquear todo el potencial, necesitas actualizar tu suscripción.", lim_btn: "Ver Planes Profesionales"
+            },
+            en: {
+                auth_login_sub: "Log in to your account", auth_email: "Work Email", auth_pwd: "Password", auth_remember: "Remember me", auth_btn_login: "Log In", auth_no_account: "Don't have an account?", auth_go_register: "Sign up for free",
+                auth_reg_sub: "Create your Workspace", auth_company: "Company Name", auth_name: "Your Name", auth_btn_reg: "Start Free Trial", auth_has_account: "Already have an account?", auth_go_login: "Log in",
+                nav_dash: "Dashboard", nav_crm: "CRM Clients", nav_inv: "Invoices", nav_cal: "Calendar", nav_wa: "Autopilot WA", nav_bill: "Subscription", nav_logout: "Log Out",
+                trial_warn_title: "You are on the Trial Plan", trial_warn_desc: "You have a maximum limit of clients. To unlock full potential, choose a professional plan.", trial_warn_btn: "View Plans",
+                kpi_income: "Total Income", kpi_clients: "Total Clients", kpi_inv: "Invoices Issued", kpi_limit: "Client Limit", dash_chart: "Revenue Evolution",
+                btn_add_client: "+ Add Client", th_name: "Name", th_phone: "Phone", th_email: "Email", th_actions: "Actions",
+                inv_title: "Billing History", btn_add_inv: "+ Create Invoice", th_num: "Number", th_client: "Client", th_date: "Due Date", th_total: "Total", btn_back: "← Back",
+                inv_build_title: "Invoice Setup", lbl_client: "Client", lbl_inv_num: "Number", lbl_inv_due: "Due Date", lbl_iva: "Applicable VAT (%)", inv_lines: "Invoice Lines", btn_add_line: "+ Add Item", btn_save_inv: "Save & Issue Invoice",
+                cal_prev: "Prev", cal_next: "Next", cal_add_title: "Add Event", cal_lbl_title: "Title", cal_lbl_date: "Date",
+                wa_title: "WhatsApp Autopilot", wa_desc: "Generate quick messages and open them in WhatsApp Web.", wa_lbl_phone: "Phone (with prefix, e.g., 1)", wa_lbl_template: "Quick Template", wa_opt_custom: "Custom...", wa_opt_remind: "Appointment Reminder", wa_opt_inv: "Invoice Notice", wa_opt_follow: "Interest Follow-up", wa_lbl_msg: "Message", wa_btn_send: "Open in WhatsApp Web",
+                bill_curr_plan: "Current Plan:", bill_usage: "Client Usage:", btn_req_plan: "Request Upgrade", btn_curr_plan: "Current Plan",
+                mod_client_title: "Client Profile", btn_cancel: "Cancel", btn_save: "Save",
+                lim_title: "Limit Reached", lim_desc: "You have reached the client limit for your current plan. To continue growing and unlock full potential, you need to upgrade your subscription.", lim_btn: "View Professional Plans"
+            }
+        };
+
+        // --- Theme & Lang & Responsive ---
+        let isDark = localStorage.getItem('nx_theme') === 'dark';
+        function applyTheme() {
+            if(isDark) document.documentElement.setAttribute('data-theme', 'dark');
+            else document.documentElement.removeAttribute('data-theme');
+            const icon = isDark ? '☀️' : '🌙';
+            if(document.getElementById('auth-theme-btn')) document.getElementById('auth-theme-btn').textContent = icon;
+            if(document.getElementById('app-theme-btn')) document.getElementById('app-theme-btn').textContent = icon;
+            renderChart(); // redraw chart with correct colors
+        }
+        function toggleTheme() { isDark = !isDark; localStorage.setItem('nx_theme', isDark?'dark':'light'); applyTheme(); }
+
+        let lang = localStorage.getItem('nx_lang') || 'es';
+        function applyLang() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if(dict[lang] && dict[lang][key]) { el.innerHTML = dict[lang][key]; }
+            });
+            const text = lang === 'es' ? 'EN' : 'ES';
+            if(document.getElementById('auth-lang-btn')) document.getElementById('auth-lang-btn').textContent = text;
+            if(document.getElementById('app-lang-btn')) document.getElementById('app-lang-btn').textContent = text;
+            
+            if(state.workspace) {
+                if(document.getElementById('view-billing').classList.contains('active')) renderBilling();
+                if(document.getElementById('view-invoices').classList.contains('active')) renderInvoices();
+                if(document.getElementById('view-calendar').classList.contains('active')) renderCalendar();
+                updateSelectors();
+            }
+        }
+        function toggleLang() { lang = lang === 'es' ? 'en' : 'es'; localStorage.setItem('nx_lang', lang); applyLang(); }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('open');
+            document.querySelector('.sidebar-overlay').classList.toggle('show');
+        }
+
+        // --- Core Data & Init ---
+        const PLANS = {
+            Prueba: { limit: 2, price: 0, title: "Plan Prueba", desc: "Testeo" },
+            Starter: { limit: 50, price: 19, title: "Starter", desc: "Pequeños negocios" },
+            Growth: { limit: 500, price: 49, title: "Growth", desc: "Escala ventas" },
+            Pro: { limit: Infinity, price: 99, title: "Pro", desc: "Sin límites" }
+        };
+
+        let state = {
+            user: null, workspace: null, clients: [], invoices: [], events: [],
+            adminData: { workspaces: [], requests: [] }
+        };
+
+        function init() {
+            applyTheme(); applyLang();
+            createGlobalAdmin();
+            
+            const token = sessionStorage.getItem('nx_token') || localStorage.getItem('nx_token');
+            if(token) {
+                const parts = token.split('|');
+                const users = JSON.parse(localStorage.getItem('nx_users') || '[]');
+                state.user = users.find(u => u.email === parts[0]);
+                if(state.user) {
+                    loadWorkspaceData();
+                    showApp();
+                } else {
+                    sessionStorage.removeItem('nx_token'); localStorage.removeItem('nx_token');
+                    document.getElementById('auth-view').classList.remove('hidden');
+                }
+            } else {
+                document.getElementById('auth-view').classList.remove('hidden');
+            }
+        }
+
+        function createGlobalAdmin() {
+            let users = JSON.parse(localStorage.getItem('nx_users') || '[]');
+            if(!users.find(u => u.email === 'admin@nexora.com')) {
+                users.push({ id: 'admin_1', wsId: 'admin_ws', name: 'Global Admin', email: 'admin@nexora.com', pwd: 'admin_nexora_secure', role: 'superadmin' });
+                localStorage.setItem('nx_users', JSON.stringify(users));
+                let wss = JSON.parse(localStorage.getItem('nx_workspaces') || '[]');
+                wss.push({ id: 'admin_ws', name: 'Nexora System', plan: 'Pro' });
+                localStorage.setItem('nx_workspaces', JSON.stringify(wss));
+            }
+        }
+
+        // --- Auth ---
+        function toggleAuth(view) {
+            document.getElementById('login-box').classList.add('hidden');
+            document.getElementById('register-box').classList.add('hidden');
+            document.getElementById(`${view}-box`).classList.remove('hidden');
+        }
+
+        document.getElementById('login-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            const pwd = document.getElementById('login-pwd').value;
+            const remember = document.getElementById('login-remember').checked;
+            
+            const users = JSON.parse(localStorage.getItem('nx_users') || '[]');
+            const user = users.find(u => u.email === email && u.pwd === pwd);
+            
+            if(user) {
+                const token = `${user.email}|${user.wsId}`;
+                if(remember) localStorage.setItem('nx_token', token);
+                else sessionStorage.setItem('nx_token', token);
+                
+                state.user = user;
+                loadWorkspaceData();
+                showApp();
+                toast(lang==='es'?'Bienvenido de nuevo':'Welcome back');
+            } else {
+                toast(lang==='es'?'Credenciales incorrectas':'Invalid credentials', 'error');
+            }
+        });
+
+        document.getElementById('register-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const company = document.getElementById('reg-company').value;
+            const name = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const pwd = document.getElementById('reg-pwd').value;
+
+            const users = JSON.parse(localStorage.getItem('nx_users') || '[]');
+            if(users.find(u => u.email === email)) return toast(lang==='es'?'Email ya registrado':'Email already registered', 'error');
+
+            const wsId = 'ws_' + Date.now();
+            const userId = 'u_' + Date.now();
+
+            const newUser = { id: userId, wsId, name, email, pwd, role: 'owner' };
+            users.push(newUser);
+            localStorage.setItem('nx_users', JSON.stringify(users));
+
+            const wss = JSON.parse(localStorage.getItem('nx_workspaces') || '[]');
+            wss.push({ id: wsId, name: company, plan: 'Prueba' });
+            localStorage.setItem('nx_workspaces', JSON.stringify(wss));
+
+            localStorage.setItem(`nx_data_${wsId}`, JSON.stringify({ clients: [], invoices: [], events: [] }));
+
+            const token = `${email}|${wsId}`;
+            localStorage.setItem('nx_token', token); 
+            
+            state.user = newUser;
+            loadWorkspaceData();
+            showApp();
+            toast(lang==='es'?'Workspace creado con éxito':'Workspace created successfully');
+        });
+
+        function logout() {
+            sessionStorage.removeItem('nx_token');
+            localStorage.removeItem('nx_token');
+            location.reload();
+        }
+
+        // --- Data Loading ---
+        function loadWorkspaceData() {
+            const wss = JSON.parse(localStorage.getItem('nx_workspaces') || '[]');
+            state.workspace = wss.find(w => w.id === state.user.wsId);
+            
+            if(state.user.role === 'superadmin') {
+                state.adminData.workspaces = wss;
+                state.adminData.requests = JSON.parse(localStorage.getItem('nx_requests') || '[]');
+                state.adminData.users = JSON.parse(localStorage.getItem('nx_users') || '[]');
+            } else {
+                const data = JSON.parse(localStorage.getItem(`nx_data_${state.workspace.id}`) || '{"clients":[],"invoices":[],"events":[]}');
+                state.clients = data.clients || [];
+                state.invoices = data.invoices || [];
+                state.events = data.events || [];
+            }
+        }
+
+        function saveData() {
+            if(state.user.role === 'superadmin') return;
+            localStorage.setItem(`nx_data_${state.workspace.id}`, JSON.stringify({
+                clients: state.clients, invoices: state.invoices, events: state.events
+            }));
+        }
+
+        // --- UI & Routing ---
+        function showApp() {
+            document.getElementById('auth-view').classList.add('hidden');
+            document.getElementById('app-layout').classList.remove('hidden');
+            
+            document.getElementById('ui-company').textContent = state.workspace.name;
+            document.getElementById('ui-user').textContent = state.user.name;
+            document.getElementById('ui-plan').textContent = PLANS[state.workspace.plan].title;
+
+            if(state.user.role === 'superadmin') {
+                document.getElementById('nav-user').classList.add('hidden');
+                document.getElementById('nav-admin').classList.remove('hidden');
+                navigate('admin-dash');
+            } else {
+                updateSelectors();
+                navigate('dashboard');
+            }
+        }
+
+        function navigate(viewId) {
+            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+            document.getElementById(`view-${viewId}`).classList.add('active');
+            
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            const btn = document.querySelector(`.nav-btn[onclick="navigate('${viewId}')"]`);
+            if(btn) btn.classList.add('active');
+
+            if(btn) {
+                const span = btn.querySelector('span');
+                document.getElementById('header-title').textContent = span ? span.textContent : btn.textContent.replace(/[^\w\s]/gi, '');
+            }
+
+            if(window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('open');
+                document.querySelector('.sidebar-overlay').classList.remove('show');
+            }
+
+            if(viewId === 'dashboard') renderDashboard();
+            if(viewId === 'clients') renderClients();
+            if(viewId === 'invoices') renderInvoices();
+            if(viewId === 'calendar') renderCalendar();
+            if(viewId === 'whatsapp') { updateSelectors(); document.getElementById('wa-msg').value = ''; document.getElementById('wa-phone').value = ''; }
+            if(viewId === 'billing') renderBilling();
+            if(viewId === 'admin-dash') renderAdminDash();
+            if(viewId === 'admin-requests') renderAdminReq();
+        }
+
+        function toast(msg, type='success') {
+            const container = document.getElementById('toast-container');
+            const el = document.createElement('div');
+            el.className = 'toast';
+            if(type === 'error') el.style.borderLeftColor = 'var(--danger)';
+            el.textContent = msg;
+            container.appendChild(el);
+            setTimeout(() => { el.remove(); }, 3000);
+        }
+
+        function openModal(id) { document.getElementById(id).classList.remove('hidden'); }
+        function closeModal(id) { document.getElementById(id).classList.add('hidden'); }
+
+        function updateSelectors() {
+            const opts = '<option value="">'+(lang==='es'?'Seleccionar Cliente':'Select Client')+'</option>' + state.clients.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+            if(document.getElementById('inv-client')) document.getElementById('inv-client').innerHTML = opts;
+            if(document.getElementById('ev-client')) document.getElementById('ev-client').innerHTML = opts;
+            if(document.getElementById('wa-client')) document.getElementById('wa-client').innerHTML = opts;
+        }
+
+        // --- Dashboard ---
+        let mainChart = null;
+        function renderDashboard() {
+            const totalClients = state.clients.length;
+            const limit = PLANS[state.workspace.plan].limit;
+            const totalInvoices = state.invoices.length;
+            const totalIncome = state.invoices.reduce((sum, inv) => sum + inv.total, 0);
+
+            document.getElementById('kpi-income').textContent = totalIncome.toFixed(2) + ' €';
+            document.getElementById('kpi-clients').textContent = totalClients;
+            document.getElementById('kpi-invoices').textContent = totalInvoices;
+            document.getElementById('kpi-limit').textContent = limit === Infinity ? '∞' : limit;
+
+            const warn = document.getElementById('trial-warning');
+            if(state.workspace.plan === 'Prueba') warn.classList.remove('hidden');
+            else warn.classList.add('hidden');
+
+            renderChart();
+        }
+
+        function renderChart() {
+            const ctx = document.getElementById('income-chart');
+            if(!ctx) return;
+            if(mainChart) mainChart.destroy();
+            
+            const textColor = getComputedStyle(document.documentElement).getPropertyValue('--text-main').trim();
+            const gridColor = getComputedStyle(document.documentElement).getPropertyValue('--border-strong').trim();
+            const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--primary').trim();
+            
+            const totalIncome = state.invoices.reduce((sum, inv) => sum + inv.total, 0);
+
+            mainChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Mes Ant.', 'Mes Actual'],
+                    datasets: [{ label: lang==='es'?'Facturación (€)':'Revenue (€)', data: [0, totalIncome], backgroundColor: primaryColor, borderRadius: 8 }]
+                },
+                options: {
+                    responsive: true, maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { grid: { color: gridColor }, ticks: { color: textColor } },
+                        x: { grid: { display: false }, ticks: { color: textColor } }
+                    }
+                }
+            });
+        }
+
+        // --- CRM ---
+        function renderClients() {
+            const q = document.getElementById('search-client').value.toLowerCase();
+            const filtered = state.clients.filter(c => c.name.toLowerCase().includes(q));
+            
+            document.getElementById('table-clients').innerHTML = filtered.map(c => `
+                <tr>
+                    <td><strong>${c.name}</strong></td>
+                    <td>${c.phone || '-'}</td>
+                    <td>${c.email || '-'}</td>
+                    <td>
+                        <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem; border-color:var(--danger); color:var(--danger);" onclick="deleteClient('${c.id}')">Eliminar</button>
+                    </td>
+                </tr>
+            `).join('');
+            updateSelectors();
+        }
+
+        function openClientModal() {
+            if(state.clients.length >= PLANS[state.workspace.plan].limit) {
+                openModal('modal-limit');
+            } else {
+                document.getElementById('client-form').reset();
+                openModal('modal-client-form');
+            }
+        }
+
+        function saveClient(e) {
+            e.preventDefault();
+            if(state.clients.length >= PLANS[state.workspace.plan].limit) {
+                closeModal('modal-client-form'); openModal('modal-limit'); return;
+            }
+            const name = document.getElementById('client-name').value;
+            state.clients.push({ id: 'c_'+Date.now(), name, phone: document.getElementById('client-phone').value, email: document.getElementById('client-email').value });
+            toast(lang==='es'?'Cliente añadido':'Client added');
+            saveData(); renderClients(); closeModal('modal-client-form');
+            e.target.reset();
+        }
+
+        function deleteClient(id) {
+            if(confirm(lang==='es'?'¿Eliminar cliente?':'Delete client?')) {
+                state.clients = state.clients.filter(c => c.id !== id);
+                // clean up events/invoices? For simplicity we keep invoices.
+                saveData(); renderClients(); toast(lang==='es'?'Cliente eliminado':'Client deleted');
+            }
+        }
+
+        // --- Invoices ---
+        let currentInvLines = [];
+        
+        function renderInvoices() {
+            document.getElementById('table-invoices').innerHTML = state.invoices.map(i => {
+                const c = state.clients.find(x => x.id === i.clientId);
+                return `
+                <tr>
+                    <td><strong>${i.num}</strong></td>
+                    <td>${c ? c.name : 'Desconocido'}</td>
+                    <td>${new Date(i.date).toLocaleDateString()}</td>
+                    <td><strong style="color:var(--primary);">${i.total.toFixed(2)} €</strong></td>
+                    <td>
+                        <button class="btn btn-outline" style="padding:6px 12px; font-size:0.8rem;" onclick="downloadPDF('${i.id}')">Descargar PDF</button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openInvoiceBuilder() {
+            document.getElementById('inv-num').value = 'INV-' + new Date().getFullYear() + '-' + String(state.invoices.length + 1).padStart(3, '0');
+            document.getElementById('inv-due').value = new Date().toISOString().split('T')[0];
+            document.getElementById('inv-tax').value = "21";
+            currentInvLines = [];
+            addInvoiceLineForm();
+            updateSelectors(); // ensure populated
+            navigate('invoice-builder');
+        }
+
+        function addInvoiceLineForm() {
+            currentInvLines.push({ id: Date.now(), desc: '', price: 0, qty: 1 });
+            renderInvoiceFormLines();
+            updatePreview();
+        }
+
+        function updateLine(id, field, value) {
+            const line = currentInvLines.find(l => l.id === id);
+            if(line) {
+                if(field === 'price' || field === 'qty') line[field] = parseFloat(value) || 0;
+                else line[field] = value;
+                updatePreview();
+            }
+        }
+
+        function removeLine(id) {
+            currentInvLines = currentInvLines.filter(l => l.id !== id);
+            renderInvoiceFormLines();
+            updatePreview();
+        }
+
+        function renderInvoiceFormLines() {
+            const c = document.getElementById('inv-form-lines');
+            c.innerHTML = currentInvLines.map(l => `
+                <div class="flex gap-2 items-center mb-2 p-2 border border-border" style="border-radius:12px; background:var(--bg); flex-wrap:wrap;">
+                    <input type="text" placeholder="${lang==='es'?'Concepto':'Item'}" value="${l.desc}" oninput="updateLine(${l.id}, 'desc', this.value)" style="margin:0; flex:1; min-width:150px;">
+                    <div class="flex gap-2" style="flex:1;">
+                        <input type="number" placeholder="${lang==='es'?'Precio':'Price'}" value="${l.price}" oninput="updateLine(${l.id}, 'price', this.value)" style="margin:0; width:100%; text-align:right;">
+                        <input type="number" placeholder="${lang==='es'?'Cant.':'Qty'}" value="${l.qty}" oninput="updateLine(${l.id}, 'qty', this.value)" style="margin:0; width:80px; text-align:center;">
+                        <button class="icon-btn" onclick="removeLine(${l.id})" style="border:none; color:var(--danger); width:40px; height:40px; border-radius:12px;">✖</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updatePreview() {
+            const cid = document.getElementById('inv-client').value;
+            const c = state.clients.find(x => x.id === cid);
+            const num = document.getElementById('inv-num').value || 'INV-000';
+            const taxRate = parseFloat(document.getElementById('inv-tax').value) || 0;
+            const dueDate = document.getElementById('inv-due').value;
+
+            document.getElementById('pv-company').textContent = state.workspace.name;
+            document.getElementById('pv-company-email').textContent = state.user.email;
+            document.getElementById('pv-num').textContent = num;
+            document.getElementById('pv-date').textContent = (lang==='es'?'Vencimiento: ':'Due: ') + (dueDate ? new Date(dueDate).toLocaleDateString(lang==='es'?'es-ES':'en-US') : '-');
+            document.getElementById('pv-client').textContent = c ? c.name : (lang==='es'?'Cliente no seleccionado':'Client not selected');
+
+            let subtotal = 0;
+            document.getElementById('pv-lines').innerHTML = currentInvLines.map(l => {
+                const lineTotal = l.price * l.qty;
+                subtotal += lineTotal;
+                return `<tr><td style="padding:12px; border-bottom:1px solid #eee;">${l.desc || '-'}</td><td style="text-align:center; padding:12px; border-bottom:1px solid #eee;">${l.qty}</td><td style="text-align:right; padding:12px; border-bottom:1px solid #eee;">${l.price.toFixed(2)} €</td><td style="text-align:right; padding:12px; border-bottom:1px solid #eee;">${lineTotal.toFixed(2)} €</td></tr>`;
+            }).join('');
+
+            const tax = subtotal * (taxRate / 100);
+            const total = subtotal + tax;
+
+            document.getElementById('pv-subtotal').textContent = subtotal.toFixed(2) + ' €';
+            document.getElementById('pv-tax-lbl').textContent = taxRate;
+            document.getElementById('pv-tax-val').textContent = tax.toFixed(2) + ' €';
+            document.getElementById('pv-total').textContent = total.toFixed(2) + ' €';
+        }
+
+        function saveInvoice() {
+            const clientId = document.getElementById('inv-client').value;
+            if(!clientId) return toast(lang==='es'?'Selecciona un cliente':'Select a client', 'error');
+            const validLines = currentInvLines.filter(l => l.desc.trim() !== '' && l.price > 0);
+            if(validLines.length === 0) return toast(lang==='es'?'Añade al menos un concepto válido':'Add at least one valid item', 'error');
+            
+            const taxRate = parseFloat(document.getElementById('inv-tax').value) || 0;
+            const subtotal = validLines.reduce((s, l) => s + (l.price * l.qty), 0);
+            const tax = subtotal * (taxRate / 100);
+            const total = subtotal + tax;
+            const date = document.getElementById('inv-due').value || new Date().toISOString().split('T')[0];
+
+            const inv = {
+                id: 'inv_' + Date.now(), num: document.getElementById('inv-num').value, clientId,
+                date: date, lines: validLines, taxRate, subtotal, tax, total
+            };
+            
+            state.invoices.push(inv);
+            saveData();
+            toast(lang==='es'?'Factura generada y guardada':'Invoice generated and saved');
+            
+            downloadPDF(inv.id, true);
+            navigate('invoices');
+        }
+
+        function downloadPDF(id, fromBuilder = false) {
+            const inv = state.invoices.find(i => i.id === id);
+            if(!inv) return;
+
+            if(!fromBuilder) {
+                const c = state.clients.find(x => x.id === inv.clientId);
+                document.getElementById('pv-company').textContent = state.workspace.name;
+                document.getElementById('pv-company-email').textContent = state.user.email;
+                document.getElementById('pv-num').textContent = inv.num;
+                document.getElementById('pv-date').textContent = (lang==='es'?'Vencimiento: ':'Due: ') + new Date(inv.date).toLocaleDateString(lang==='es'?'es-ES':'en-US');
+                document.getElementById('pv-client').textContent = c ? c.name : 'Unknown';
+
+                document.getElementById('pv-lines').innerHTML = inv.lines.map(l => {
+                    const lineTotal = l.price * l.qty;
+                    return `<tr><td style="padding:12px; border-bottom:1px solid #eee;">${l.desc}</td><td style="text-align:center; padding:12px; border-bottom:1px solid #eee;">${l.qty}</td><td style="text-align:right; padding:12px; border-bottom:1px solid #eee;">${l.price.toFixed(2)} €</td><td style="text-align:right; padding:12px; border-bottom:1px solid #eee;">${lineTotal.toFixed(2)} €</td></tr>`;
+                }).join('');
+
+                document.getElementById('pv-subtotal').textContent = inv.subtotal.toFixed(2) + ' €';
+                document.getElementById('pv-tax-lbl').textContent = inv.taxRate;
+                document.getElementById('pv-tax-val').textContent = inv.tax.toFixed(2) + ' €';
+                document.getElementById('pv-total').textContent = inv.total.toFixed(2) + ' €';
+            }
+
+            const element = document.getElementById('print-paper');
+            const opt = {
+              margin: 0, filename: `${inv.num}.pdf`,
+              image: { type: 'jpeg', quality: 0.98 },
+              html2canvas: { scale: 2 },
+              jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+            
+            html2pdf().set(opt).from(element).save();
+        }
+
+        // --- Calendar ---
+        let currDate = new Date();
+        function renderCalendar() {
+            updateSelectors();
+            const grid = document.getElementById('calendar-grid');
+            const m = currDate.getMonth(); const y = currDate.getFullYear();
+            const monthName = new Date(y, m, 1).toLocaleDateString(lang==='es'?'es-ES':'en-US', {month:'long', year:'numeric'});
+            document.getElementById('cal-month-label').textContent = monthName;
+            
+            let firstDay = new Date(y, m, 1).getDay();
+            if(firstDay === 0) firstDay = 7; // Make Monday start
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+            
+            let html = '';
+            for(let i=1; i<firstDay; i++) html += `<div class="cal-day empty"></div>`;
+            
+            for(let i=1; i<=daysInMonth; i++) {
+                const dateStr = `${y}-${String(m+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                
+                // Get standard events
+                const evs = state.events.filter(e => e.date === dateStr);
+                let evHtml = evs.map(e => {
+                    const c = state.clients.find(x => x.id === e.clientId);
+                    return `<div class="cal-event" title="${e.title}">${e.title} ${c?`(${c.name})`:''}</div>`;
+                }).join('');
+
+                // Get invoices due on this date
+                const invs = state.invoices.filter(inv => inv.date === dateStr);
+                let invHtml = invs.map(inv => {
+                    return `<div class="cal-event invoice" title="Vence ${inv.num}">⚠️ Vence: ${inv.num}</div>`;
+                }).join('');
+
+                html += `<div class="cal-day"><div class="cal-date-num">${i}</div>${evHtml}${invHtml}</div>`;
+            }
+            grid.innerHTML = html;
+        }
+
+        function changeMonth(dir) { currDate.setMonth(currDate.getMonth() + dir); renderCalendar(); }
+
+        function saveEvent(e) {
+            e.preventDefault();
+            state.events.push({
+                id: 'e_'+Date.now(),
+                title: document.getElementById('ev-title').value,
+                date: document.getElementById('ev-date').value,
+                clientId: document.getElementById('ev-client').value
+            });
+            saveData(); renderCalendar(); 
+            e.target.reset(); toast(lang==='es'?'Evento guardado':'Event saved');
+        }
+
+        // --- WhatsApp ---
+        function updateWaPhone() {
+            const cid = document.getElementById('wa-client').value;
+            const c = state.clients.find(x => x.id === cid);
+            if(c && c.phone) document.getElementById('wa-phone').value = c.phone.replace(/\D/g,'');
+            else document.getElementById('wa-phone').value = '';
+            applyWaTemplate();
+        }
+
+        function applyWaTemplate() {
+            const t = document.getElementById('wa-template').value;
+            const cid = document.getElementById('wa-client').value;
+            const c = state.clients.find(x => x.id === cid);
+            const name = c ? c.name : (lang==='es'?'Cliente':'Client');
+            
+            const msgArea = document.getElementById('wa-msg');
+            if(t==='recordatorio') msgArea.value = lang==='es'?`Hola ${name}, te recordamos que tienes una cita programada próximamente. Por favor, confirma tu asistencia.`:`Hi ${name}, reminding you of your upcoming appointment. Please confirm.`;
+            else if(t==='factura') msgArea.value = lang==='es'?`Hola ${name}, te informamos que hemos emitido una nueva factura por nuestros servicios. Quedamos a tu disposición.`:`Hi ${name}, a new invoice has been issued. We remain at your disposal.`;
+            else if(t==='seguimiento') msgArea.value = lang==='es'?`Hola ${name}, queríamos hacer seguimiento a nuestra propuesta. ¿Podemos ayudarte en algo?`:`Hi ${name}, following up on our proposal. Can we help with anything?`;
+            else if(t==='') msgArea.value = '';
+        }
+
+        function sendWhatsApp() {
+            const phone = document.getElementById('wa-phone').value.trim();
+            const msg = encodeURIComponent(document.getElementById('wa-msg').value);
+            if(!phone || !msg) return toast(lang==='es'?'Falta teléfono o mensaje':'Missing phone or message', 'error');
+            window.open(`https://wa.me/${phone}?text=${msg}`, '_blank');
+        }
+
+        // --- Billing ---
+        function renderBilling() {
+            document.getElementById('bill-current-plan').textContent = PLANS[state.workspace.plan].title;
+            document.getElementById('bill-usage').textContent = state.clients.length;
+            document.getElementById('bill-limit').textContent = PLANS[state.workspace.plan].limit === Infinity ? '∞' : PLANS[state.workspace.plan].limit;
+
+            const plansKeys = ['Starter', 'Growth', 'Pro'];
+            document.getElementById('billing-plans').innerHTML = plansKeys.map(p => {
+                const isCurrent = state.workspace.plan === p;
+                const req = dict[lang].btn_req_plan;
+                const curr = dict[lang].btn_curr_plan;
+                return `
+                <div class="card text-center" style="${isCurrent ? 'border: 2px solid var(--primary); transform:translateY(-5px);' : ''}">
+                    <h3 style="color:var(--text-main);">${PLANS[p].title}</h3>
+                    <p style="color:var(--text-soft); font-size:0.85rem; margin-bottom:1rem;">${PLANS[p].desc}</p>
+                    <h2 class="mb-4" style="font-size:2.5rem; color:var(--text-main);">${PLANS[p].price}€<span style="font-size:0.9rem; color:var(--text-soft);">/mes</span></h2>
+                    <p class="text-soft text-sm mb-6" style="font-weight:600; color:var(--primary);">Límite clientes: ${PLANS[p].limit === Infinity ? (lang==='es'?'Ilimitado':'Unlimited') : PLANS[p].limit}</p>
+                    ${isCurrent 
+                        ? `<button class="btn btn-outline" style="width:100%" disabled>${curr}</button>` 
+                        : `<button class="btn btn-primary" style="width:100%" onclick="requestPlan('${p}')">${req}</button>`}
+                </div>
+            `}).join('');
+        }
+
+        function requestPlan(plan) {
+            const reqs = JSON.parse(localStorage.getItem('nx_requests') || '[]');
+            reqs.push({ id: 'req_'+Date.now(), wsId: state.workspace.id, wsName: state.workspace.name, email: state.user.email, current: state.workspace.plan, requested: plan, status: 'pending' });
+            localStorage.setItem('nx_requests', JSON.stringify(reqs));
+            toast(lang==='es'?'Solicitud enviada al Administrador':'Request sent to Admin');
+        }
+
+        // --- Admin ---
+        function renderAdminDash() {
+            document.getElementById('table-admin-ws').innerHTML = state.adminData.workspaces.filter(w=>w.id!=='admin_ws').map(w => {
+                const u = state.adminData.users.find(x => x.wsId === w.id && x.role === 'owner');
+                return `<tr><td><strong>${w.name}</strong></td><td>${u?u.email:'-'}</td><td><span class="badge badge-primary">${w.plan}</span></td></tr>`;
+            }).join('');
+        }
+
+        function renderAdminReq() {
+            const reqs = state.adminData.requests.filter(r => r.status === 'pending');
+            document.getElementById('table-admin-req').innerHTML = reqs.map(r => `
+                <tr>
+                    <td><strong>${r.wsName}</strong> (${r.email})</td>
+                    <td>${r.current}</td>
+                    <td><span class="badge badge-warning">${r.requested}</span></td>
+                    <td>
+                        <button class="btn btn-primary" style="padding:6px 12px; font-size:0.8rem;" onclick="resolveReq('${r.id}', true)">Aprobar</button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function resolveReq(reqId, approved) {
+            const reqs = state.adminData.requests;
+            const r = reqs.find(x => x.id === reqId);
+            r.status = approved ? 'approved' : 'rejected';
+            localStorage.setItem('nx_requests', JSON.stringify(reqs));
+            
+            if(approved) {
+                const wss = state.adminData.workspaces;
+                const ws = wss.find(w => w.id === r.wsId);
+                ws.plan = r.requested;
+                localStorage.setItem('nx_workspaces', JSON.stringify(wss));
+            }
+
+            toast(lang==='es'?`Solicitud ${approved?'Aprobada':'Rechazada'}`:`Request ${approved?'Approved':'Rejected'}`);
+            renderAdminReq(); renderAdminDash();
+        }
+
+        // Run
+        init();
+
+    </script>
+</body>
+</html>
